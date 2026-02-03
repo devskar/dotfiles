@@ -7,5 +7,9 @@ apt install neovim -y
 apt install curl -y
 apt install git -y
 apt install build-essential -y
+
+# zsh
 apt install zsh -y
+chsh -s $(which zsh)
+
 sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y
