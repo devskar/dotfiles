@@ -1,0 +1,18 @@
+rupa/z
+
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-autosuggestions
+
+getantidote/use-omz
+ohmyzsh/ohmyzsh path:plugins/colored-man-pages
+ohmyzsh/ohmyzsh path:plugins/docker
+ohmyzsh/ohmyzsh path:plugins/dotnet
+ohmyzsh/ohmyzsh path:plugins/dotnet
+ohmyzsh/ohmyzsh path:plugins/git-commit
+ohmyzsh/ohmyzsh path:plugins/helm
+ohmyzsh/ohmyzsh path:plugins/kubectl
+ohmyzsh/ohmyzsh path:plugins/sudo
+ohmyzsh/ohmyzsh path:plugins/tmux
+ohmyzsh/ohmyzsh path:plugins/git
+
+MichaelAquilina/zsh-you-should-use
