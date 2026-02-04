@@ -17,8 +17,13 @@ case "$OSTYPE" in
   linux*)  source ~/dotfiles/bootstrap/linux.sh ;;
 esac
 
+rm -rf ~/.antidote
 git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
 
+rm -rf ~/.tmux/plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+echo
 echo "Installed dotfiles!"
 
-source ~/.zshrc
+echo "Run: source ~/.zshrc"
