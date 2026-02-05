@@ -1,11 +1,6 @@
 autoload -Uz compinit
 compinit
 
-# ---- Zsh options ----
-setopt AUTO_CD
-setopt HIST_IGNORE_ALL_DUPS
-setopt SHARE_HISTORY
-
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000
 SAVEHIST=10000
@@ -17,9 +12,6 @@ source ~/dotfiles/zsh/opts.zsh
 source ~/.antidote/antidote.zsh
 
 antidote load
-
-# ---- Prompt (temporary, replace later) ----
-PROMPT='%F{cyan}%n@%m%f %F{yellow}%~%f %# '
 
 # ---- Tmux auto start ----
 if command -v tmux >/dev/null && [ -z "$TMUX" ]; then
