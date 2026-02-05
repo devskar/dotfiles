@@ -14,7 +14,14 @@ ln -sfn ~/dotfiles/nvim ~/.config/nvim
 # ---- OS-specific-tweaks
 case "$OSTYPE" in
   darwin*) source ~/dotfiles/bootstrap/macos.sh ;;
-  linux*)  source ~/dotfiles/bootstrap/linux.sh ;;
+  linux*)
+    source /etc/os-release
+    case "$ID" in
+      arch) source ~/dotfiles/bootstrap/arch.sh ;;
+      ubuntu|debian) source ~/dotfiles/bootstrap/ubuntu.sh ;;
+      *) echo "Error: Unsupported distro: $ID"; exit 1 ;;
+    esac
+    ;;
 esac
 
 rm -rf ~/.antidote
