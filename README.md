@@ -1,20 +1,8 @@
 # dotfiles
 
-## macOS
+# Install
 
 ```shell
-brew install neovim tmux
-brew install --cask omnisharp
-```
-
-## Ubuntu/Debian
-
-```shell
-sudo apt install neovim tmux
-```
-
-## Arch Linux
-
-```shell
-sudo pacman -S neovim tmux
+git clone git@github.com:devskar/dotfiles.git ~/dotfiles
+~/dotfiles/install.sh
 ```
