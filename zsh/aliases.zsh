@@ -15,6 +15,10 @@ alias ta='tmux attach -t'
 alias tn='tmux new -s'
 
 # ---- trash cli ----
+alias 'rm -r'='trash'
+alias 'rm -rf'='trash'
 alias rm='trash'
-alias 'rm -rf'='trash -r'
 
+# ---- docker ----
+alias dubu='docker run --rm -it ubuntu bash'
+alias dalp='docker run --rm -it alpine ash'
