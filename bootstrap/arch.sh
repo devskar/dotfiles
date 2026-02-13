@@ -33,6 +33,7 @@ $SUDO pacman -S tmux --noconfirm
 
 # Nvim
 $SUDO pacman -S neovim --noconfirm
+$SUDO pacman -S fd --noconfirm
 
 # zsh
 $SUDO pacman -S zsh --noconfirm

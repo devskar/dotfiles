@@ -2,6 +2,7 @@ rupa/z
 
 zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-autosuggestions
+marlonrichert/zsh-autocomplete
 
 getantidote/use-omz
 ohmyzsh/ohmyzsh path:plugins/docker

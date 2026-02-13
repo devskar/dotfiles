@@ -17,7 +17,6 @@ $SUDO apt install unzip -y
 $SUDO apt install software-properties-common -y
 $SUDO apt install git -y
 $SUDO apt install build-essential -y
-$SUDO apt install ripgrep -y
 $SUDO apt install trash-cli -y
 $SUDO apt install groff-base -y
 $SUDO apt install manpages -y
@@ -35,9 +34,12 @@ $SUDO apt install tmux -y
 # Nvim
 $SUDO add-apt-repository ppa:neovim-ppa/unstable -y
 $SUDO apt install neovim -y
+$SUDO apt install fd-find -y # for telescope
+$SUDO apt install ripgrep -y # for telescope
 
 # zsh
 $SUDO apt install zsh -y
 chsh -s /bin/zsh
 
+# Starship
 sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y

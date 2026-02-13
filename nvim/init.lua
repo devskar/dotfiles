@@ -1,7 +1,7 @@
 require("user.options")
-require("user.keymaps")
 
 require("config.lazy")
 
 
+require("user.keymaps")
 vim.cmd.colorscheme("tokyonight")

@@ -3,7 +3,8 @@ return {
   lazy = false,
   dependencies = {
     "mason-org/mason-lspconfig.nvim",
-    "neovim/nvim-lspconfig"
+    "neovim/nvim-lspconfig",
+    { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true }
   },
   opts = {
     servers = {
@@ -20,8 +21,40 @@ return {
       eslint = {},
       tailwindcss = {},
       clangd = {},
-      -- "clang-format" = {},
-      csharp_ls = {},
+      omnisharp = {
+        -- cmd = {
+        --   "omnisharp",
+        --   "--languageserver",
+        --   "--hostPID",
+        --   tostring(vim.fn.getpid()),
+        -- },
+        handlers = {
+          ["textDocument/definition"] = function(...)
+            return require("omnisharp_extended").handler(...)
+          end,
+        },
+settings = {
+    FormattingOptions = {
+      EnableEditorConfigSupport = true,
+      OrganizeImports = true,
+    },
+    MsBuild = {
+      LoadProjectsOnDemand = false,
+    },
+    RoslynExtensionsOptions = {
+      EnableAnalyzersSupport = true,
+      EnableImportCompletion = true,
+      AnalyzeOpenDocumentsOnly = false,
+      EnableDecompilationSupport = true,
+    },
+    RenameOptions = {},
+    Sdk = { IncludePrereleases = true },
+  },
+  -- filetypes = { "cs", "csproj", "sln" },
+
+        -- filetypes = { "cs", "csproj", "sln", "slnx" }
+        -- "clang-format" = {},
+      }
     }
   },
   config = function(_, opts)
@@ -31,7 +64,9 @@ return {
       ensure_installed = vim.tbl_keys(opts.servers),
     })
 
+    local capabilities = require("blink.cmp").get_lsp_capabilities()
     for server, config in pairs(opts.servers) do
+      config.capabilities = capabilities
       vim.lsp.config(server, config)
       vim.lsp.enable(server)
     end

@@ -1,3 +1,5 @@
+vim.g.mapleader = " "
+
 -- ---------- NetRW -------
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -37,3 +39,17 @@ vim.opt.splitright = true
 -- ---------- Performance ----------
 vim.opt.updatetime = 300
 vim.opt.timeoutlen = 500
+
+-- ---------- Diagnostics ----------
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = "",
+    spacing = 2,
+    severity = { min = vim.diagnostic.severity.HINT },
+    source = "if_many",
+  },
+  signs = false,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+})

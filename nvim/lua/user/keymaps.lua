@@ -1,6 +1,5 @@
-vim.g.mapleader = " "
-
 local map = vim.keymap.set
+local telescope = require("telescope.builtin")
 
 -- ---- General ----
 map("n", "<leader>", "<nop>")
@@ -12,13 +11,19 @@ map("n", "<leader>x", "<cmd>wq<CR>") -- save + quit
 
 -- ---- Telescope ----
 map("n", "<leader>ff", function()
-  require("telescope.builtin").find_files()
+  local ok = pcall(telescope.git_files)
+  if not ok then
+    telescope.find_files()
+  end
+end, { desc = "Git files / Find files" })
+map("n", "<leader>fa", function()
+    telescope.find_files()
 end, { desc = "Find files" })
 map("n", "<leader>fg", function()
-  require("telescope.builtin").live_grep()
+  telescope.live_grep()
 end, { desc = "Live grep" })
 map("n", "<leader>fb", function()
-  require("telescope.builtin").buffers()
+  telescope.buffers()
 end, { desc = "Buffers" })
 map("n", "<leader>fh", function()
   require("telescope.builtin").help_tags()
@@ -35,7 +40,7 @@ vim.api.nvim_create_autocmd(
       -- Buffer local mappings.
       -- See `:help vim.lsp.*` for documentation on any of the below functions
       local opts = { buffer = ev.buf }
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+      -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
       vim.keymap.set("n", "<leader><space>", vim.lsp.buf.hover, opts)
       vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
       vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
@@ -56,3 +61,15 @@ vim.api.nvim_create_autocmd(
     end,
   }
 )
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cs",
+  callback = function()
+    local map_opts = { noremap = true, silent = true }
+    vim.keymap.set("n", "gd", "<cmd>lua require('omnisharp_extended').lsp_definition()<CR>", map_opts)
+    vim.keymap.set("n", "<leader>D", "<cmd>lua require('omnisharp_extended').lsp_type_definition()<CR>", map_opts)
+    vim.keymap.set("n", "gr", "<cmd>lua require('omnisharp_extended').lsp_references()<CR>", map_opts)
+    vim.keymap.set("n", "gi", "<cmd>lua require('omnisharp_extended').lsp_implementation()<CR>", map_opts)
+  end
+})
+

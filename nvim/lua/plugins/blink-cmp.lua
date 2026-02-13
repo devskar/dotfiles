@@ -13,7 +13,6 @@ return {
       ["<C><leader>"] = { "show" },
     },
 
-
     appearance = {
       nerd_font_variant = "mono"
     },
