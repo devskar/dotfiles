@@ -20,41 +20,34 @@ return {
       ts_ls = {},
       eslint = {},
       tailwindcss = {},
+      ["markdownlint-cli2"] = {},
+      ["markdown-toc"] = {},
+      marksman = {},
       clangd = {},
       omnisharp = {
-        -- cmd = {
-        --   "omnisharp",
-        --   "--languageserver",
-        --   "--hostPID",
-        --   tostring(vim.fn.getpid()),
-        -- },
         handlers = {
           ["textDocument/definition"] = function(...)
             return require("omnisharp_extended").handler(...)
           end,
         },
-settings = {
-    FormattingOptions = {
-      EnableEditorConfigSupport = true,
-      OrganizeImports = true,
-    },
-    MsBuild = {
-      LoadProjectsOnDemand = false,
-    },
-    RoslynExtensionsOptions = {
-      EnableAnalyzersSupport = true,
-      EnableImportCompletion = true,
-      AnalyzeOpenDocumentsOnly = false,
-      EnableDecompilationSupport = true,
-    },
-    RenameOptions = {},
-    Sdk = { IncludePrereleases = true },
-  },
-  -- filetypes = { "cs", "csproj", "sln" },
-
-        -- filetypes = { "cs", "csproj", "sln", "slnx" }
-        -- "clang-format" = {},
-      }
+        settings = {
+          FormattingOptions = {
+            EnableEditorConfigSupport = true,
+            OrganizeImports = true,
+          },
+          MsBuild = {
+            LoadProjectsOnDemand = false,
+          },
+          RoslynExtensionsOptions = {
+            EnableAnalyzersSupport = true,
+            EnableImportCompletion = true,
+            AnalyzeOpenDocumentsOnly = false,
+            EnableDecompilationSupport = true,
+          },
+          RenameOptions = {},
+          Sdk = { IncludePrereleases = true },
+        },
+      },
     }
   },
   config = function(_, opts)

@@ -1,19 +1,40 @@
 return {
-    "stevearc/conform.nvim",
-    lazy = false,
-    opts = {
-      formatters_by_ft = {
-        lua = { "stylua" },
-        javascript = { "prettierd", "prettier", stop_after_first = true },
-        typescript = { "prettierd", "prettier", stop_after_first = true },
-        json = { "prettierd", "prettier", stop_after_first = true },
-        graphql = { "prettierd", "prettier", stop_after_first = true },
-        cs = { },
+  "stevearc/conform.nvim",
+  lazy = false,
+  opts = {
+    formatters = {
+      ["markdown-toc"] = {
+        condition = function(_, ctx)
+          for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
+            if line:find("<!%-%- toc %-%->") then
+              return true
+            end
+          end
+        end,
       },
-      format_on_save = {
-        timeout_ms = 1000,
-        lsp_format = "fallback",
+      ["markdownlint-cli2"] = {
+        condition = function(_, ctx)
+          local diag = vim.tbl_filter(function(d)
+            return d.source == "markdownlint"
+          end, vim.diagnostic.get(ctx.buf))
+          return #diag > 0
+        end,
       },
+    },
+    formatters_by_ft = {
+      lua = { "stylua" },
+      javascript = { "prettierd", "prettier", stop_after_first = true },
+      typescript = { "prettierd", "prettier", stop_after_first = true },
+      json = { "prettierd", "prettier", stop_after_first = true },
+      graphql = { "prettierd", "prettier", stop_after_first = true },
+      cs = {},
+          ["markdown"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
+    ["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
+    },
+    format_on_save = {
+      timeout_ms = 1000,
+      lsp_format = "fallback",
+    },
   },
   {
     "windwp/nvim-ts-autotag",
