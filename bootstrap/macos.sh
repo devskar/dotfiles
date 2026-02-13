@@ -20,5 +20,6 @@ brew install tmux
 # Nvim
 brew install neovim
 brew install starship
+brew install tree-sitter-cli
 brew install fd # for telescope
 brew install ripgrep # for telescope

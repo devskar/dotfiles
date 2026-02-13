@@ -34,6 +34,7 @@ $SUDO apt install tmux -y
 # Nvim
 $SUDO add-apt-repository ppa:neovim-ppa/unstable -y
 $SUDO apt install neovim -y
+npm install --global tree-sitter-cli
 $SUDO apt install fd-find -y # for telescope
 $SUDO apt install ripgrep -y # for telescope
 
