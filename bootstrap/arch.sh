@@ -40,4 +40,7 @@ $SUDO pacman -S tree-sitter-cli --noconfirm
 $SUDO pacman -S zsh --noconfirm
 chsh -s /bin/zsh
 
+# Clipboard stuff
+$SUDO pacman -S wl-clipboard xclip xsel --noconfirm 
+
 sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y

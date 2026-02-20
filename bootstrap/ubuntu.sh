@@ -42,5 +42,9 @@ $SUDO apt install ripgrep -y # for telescope
 $SUDO apt install zsh -y
 chsh -s /bin/zsh
 
+# Clipboard stuff
+$SUDO apt install -y wl-clipboard
+$SUDO apt install -y xclip xsel
+
 # Starship
 sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y
