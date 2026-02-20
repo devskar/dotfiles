@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+CONFIG="${HOME}/.ssh/config"
+
+# Ensure config exists
+[ -f "$CONFIG" ] || {
+  echo "No SSH config found at $CONFIG"
+  exit 1
+}
+
+HOST=$(grep -E '^Host ' "$CONFIG" \
+  | sed 's/^Host //' \
+  | tr ' ' '\n' \
+  | grep -v '\*' \
+  | sort -u \
+  | fzf --prompt="Select SSH host: " \
+        --preview "ssh -T -G {} | grep -E '^hostname |^user |^port '")
+
+# Exit if nothing selected
+[ -z "$HOST" ] && exit 0
+
+# Connect
+ssh "$HOST"
