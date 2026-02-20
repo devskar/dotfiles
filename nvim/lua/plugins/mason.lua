@@ -20,9 +20,6 @@ return {
       ts_ls = {},
       eslint = {},
       tailwindcss = {},
-      ["markdownlint-cli2"] = {},
-      ["markdown-toc"] = {},
-      marksman = {},
       clangd = {},
       omnisharp = {
         handlers = {

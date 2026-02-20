@@ -14,17 +14,12 @@ export VISUAL="nvim"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
-# ---- Dotnet ----
-export DOTNET_ROOT="$HOME/.dotnet"
-
 # ---- Path ----
 typeset -U path
 path=(
   "$HOME/bin"
   "$HOME/.local/share/nvim/mason/packages/omnisharp"
   "$HOME/.local/bin"
-  "$DOTNET_ROOT"
-  "$DOTNET_ROOTE/tools"
-  "§HOME/dotfiles/bin"
+  "$HOME/dotfiles/bin"
   $path
 )

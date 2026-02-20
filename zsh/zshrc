@@ -9,6 +9,12 @@ SAVEHIST=10000
 source ~/dotfiles/zsh/env.zsh
 source ~/dotfiles/zsh/aliases.zsh
 source ~/dotfiles/zsh/opts.zsh
+
+# ---- Load tools ----
+source ~/dotfiles/zsh/tools/dotnet.zsh
+source ~/dotfiles/zsh/tools/nvm.zsh
+
+# ---- Load antidote ----
 source ~/.antidote/antidote.zsh
 
 antidote load
