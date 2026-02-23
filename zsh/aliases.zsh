@@ -25,3 +25,11 @@ alias dalp='docker run --rm -it alpine ash'
 
 # ---- git open ----
 alias go="git-open"
+
+
+# ---- Overwrite CTRL+Arrows ----
+bindkey -e
+if [[ "$TERM" == "screen"* || "$TERM" == "tmux"* ]]; then
+    bindkey '\e[1;5C' forward-word
+    bindkey '\e[1;5D' backward-word
+fi
