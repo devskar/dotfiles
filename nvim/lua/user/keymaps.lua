@@ -4,11 +4,6 @@ local telescope = require("telescope.builtin")
 -- ---- General ----
 map("n", "<leader>", "<nop>")
 
--- ---- File actions ----
-map("n", "<leader>w", "<cmd>w<CR>")  -- save
-map("n", "<leader>q", "<cmd>q<CR>")  -- quit
-map("n", "<leader>x", "<cmd>wq<CR>") -- save + quit
-
 -- ---- Telescope ----
 map("n", "<leader>ff", function()
   local ok = pcall(telescope.git_files)
@@ -17,7 +12,7 @@ map("n", "<leader>ff", function()
   end
 end, { desc = "Git files / Find files" })
 map("n", "<leader>fa", function()
-    telescope.find_files()
+  telescope.find_files()
 end, { desc = "Find files" })
 map("n", "<leader>fg", function()
   telescope.live_grep()
