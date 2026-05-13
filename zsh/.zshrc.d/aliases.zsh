@@ -6,8 +6,13 @@ alias ...='cd ../..'
 alias so='source ~/.zshrc'
 
 # ---- ls replacements ----
-alias ll='ls -lah --color=auto'
-alias ls='ls -l --color=auto'
+if ls --color=auto /dev/null >/dev/null 2>&1; then
+  alias ll='ls -lah --color=auto'
+  alias ls='ls -l --color=auto'
+else
+  alias ll='ls -lah'
+  alias ls='ls -l'
+fi
 
 # ---- NeoVim -----
 alias vim='nvim'
@@ -18,8 +23,6 @@ alias ta='tmux attach -t'
 alias tn='tmux new -s'
 
 # ---- trash cli ----
-alias 'rm -r'='trash'
-alias 'rm -rf'='trash'
 alias rm='trash'
 
 # ---- docker ----

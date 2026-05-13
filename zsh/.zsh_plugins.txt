@@ -1,14 +1,20 @@
+# Completions
+mattmc3/ez-compinit
 
+# UI UX
+zdharma-continuum/fast-syntax-highlighting  # Syntax highlighting
+zsh-users/zsh-autosuggestions               # Auto-suggestions
+zsh-users/zsh-history-substring-search      # Up/Down to search history
+
+# Utilities
 rupa/z
+MichaelAquilina/zsh-you-should-use
 
-getantidote/use-omz
-ohmyzsh/ohmyzsh path:plugins/docker
+# Completions
 ohmyzsh/ohmyzsh path:plugins/dotnet
 ohmyzsh/ohmyzsh path:plugins/git-commit
-ohmyzsh/ohmyzsh path:plugins/helm
 ohmyzsh/ohmyzsh path:plugins/kubectl
 ohmyzsh/ohmyzsh path:plugins/sudo
 ohmyzsh/ohmyzsh path:plugins/tmux
 ohmyzsh/ohmyzsh path:plugins/git
 
-MichaelAquilina/zsh-you-should-use

@@ -8,8 +8,8 @@ setopt HIST_VERIFY
 setopt HIST_IGNORE_ALL_DUPS
 setopt SHARE_HISTORY
 
-# ---- marlonrichert/zsh-autocomplete ----
-zstyle ':autocomplete:*' add-semicolon no
-zstyle ':autocomplete:*' delay 1
-zstyle ':autocomplete:*' min-input 11
+# ---- History file ----
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
 
