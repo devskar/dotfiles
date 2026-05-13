@@ -23,3 +23,6 @@ brew install starship
 brew install tree-sitter-cli
 brew install fd # for telescope
 brew install ripgrep # for telescope
+
+# Terminal
+brew install --cask ghostty

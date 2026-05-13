@@ -1,0 +1,30 @@
+# ============================================
+# Ghostty Configuration
+# ============================================
+# Font
+font-family = FiraCode Nerd Font
+font-size = 14
+
+# Theme
+theme = "Tomorrow Night"
+
+# Window appearance
+background-opacity = 0.95
+macos-titlebar-style = tabs
+window-padding-x = 8
+window-padding-y = 8
+
+# No tab bar (using tmux for multiplexing)
+window-show-tab-bar = never
+
+# Quake / Quick Terminal
+# Global hotkey: Ctrl+Enter toggles from any app
+keybind = global:cmd+enter=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-size = 50%
+
+# Graceful close (no prompts)
+confirm-close-surface = false
+
+# Auto-update
+auto-update = check

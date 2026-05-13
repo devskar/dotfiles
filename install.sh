@@ -11,6 +11,8 @@ ln -sf ~/dotfiles/tmux/tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 ln -sf ~/dotfiles/zsh/.zsh_plugins.txt ~/.zsh_plugins.txt
 ln -sfn ~/dotfiles/nvim ~/.config/nvim
+ln -sfn ~/dotfiles/wezterm ~/.config/wezterm
+ln -sfn ~/dotfiles/ghostty ~/.config/ghostty
 
 # ---- OS-specific-tweaks
 case "$OSTYPE" in
