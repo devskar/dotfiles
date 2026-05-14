@@ -3,6 +3,7 @@ local telescope = require("telescope.builtin")
 
 -- ---- General ----
 map("n", "<leader>", "<nop>")
+map("n", "<leader>w", vim.cmd.write, { desc = "Save file" })
 
 -- ---- Telescope ----
 map("n", "<leader>ff", function()
