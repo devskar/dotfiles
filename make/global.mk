@@ -1,2 +1,1 @@
-hello:
-	echo "hello"
+include ~/.make/dotnet.mk
