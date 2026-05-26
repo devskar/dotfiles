@@ -18,6 +18,3 @@ unset _rc
 
 # Starship
 eval "$(starship init zsh)"
-
-# opencode
-export PATH=/Users/oskar/.opencode/bin:$PATH
