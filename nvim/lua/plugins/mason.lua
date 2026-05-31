@@ -20,7 +20,7 @@ return {
       eslint = {},
       tailwindcss = {},
       clangd = {},
-      csharp_ls = {},
+      roslyn_ls = {},
     }
   },
   config = function(_, opts)
