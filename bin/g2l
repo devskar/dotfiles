@@ -1,0 +1,244 @@
+#!/usr/bin/env sh
+#
+# g2l - Git 2 Local
+# Interactively browse GitLab groups and clone projects / descend into subgroups.
+
+set -eu
+
+MARK_FILE_NAME=".g2l_mark"
+
+show_help() {
+  cat <<'EOF'
+┌─────────────────────────────────────────────────────┐
+│                     g2l                             │
+│                Git 2 Local                          │
+│                                                     │
+│  Recursively clone GitLab group projects and        │
+│  traverse subgroups via an interactive fzf menu.    │
+│                                                     │
+│  Usage:                                             │
+│    g2l              browse & clone from mark file   │
+│    g2l --clear      remove the .g2l_mark file       │
+│    g2l --help       show this message               │
+│                                                     │
+│  How it works:                                      │
+│    A .g2l_mark file holds a GitLab group ID. When   │
+│    run, g2l fetches all projects & subgroups in     │
+│    that group, filters out already-cloned dirs,     │
+│    and shows an fzf picker. Selecting a project     │
+│    clones it; selecting a subgroup creates its      │
+│    directory with a new .g2l_mark so you can        │
+│    descend further next time.                       │
+└─────────────────────────────────────────────────────┘
+EOF
+  exit 0
+}
+
+# Verify that required commands are available.
+check_deps() {
+  missing=""
+  for cmd in glab jq fzf; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+      missing="$missing $cmd"
+    fi
+  done
+  if [ -n "$missing" ]; then
+    echo "Missing dependencies:$missing" >&2
+    echo "Install them and try again." >&2
+    exit 1
+  fi
+}
+
+# Fetch metadata for a GitLab group by ID.
+get_group_info() {
+  group_id=$1
+  glab api "groups/$1" | jq '{
+    name: .name,
+    path: .full_path,
+    description: .description,
+    id: .id
+  }' || {
+    echo "Failed to fetch group info" >&2
+    exit 1
+  }
+}
+
+# List all projects directly under a group.
+get_group_projects() {
+  group_id=$1
+  glab repo list --group "$group_id" --output json | jq 'map({
+    name: .name,
+    path: .path,
+    description: .description,
+    type: "project",
+    id: .id
+  })' || {
+    echo "Failed to fetch projects" >&2
+    exit 1
+  }
+}
+
+# List all subgroups directly under a group.
+get_group_subgroups() {
+  group_id=$1
+  glab api "groups/$group_id/subgroups" | jq 'map({
+    name: .name,
+    path: .path,
+    description: .description,
+    type: "group",
+    id: .id
+  })' || {
+    echo "Failed to fetch subgroups" >&2
+    exit 1
+  }
+}
+
+# Show an fzf multi-select menu with type icons. The input JSON should
+# already have a .display field (e.g. "[P] name" / "[G] name"). Writes
+# the data to a temp file so the preview shell can access it safely.
+prompt_selection() {
+  data=$1
+  prompt_prefix=$2
+  data_file=$(mktemp)
+
+  printf '%s\n' "$data" > "$data_file"
+
+  selection=$(printf '%s\n' "$data" | \
+    jq -r '.[].display' | \
+    fzf -m --prompt="$prompt_prefix" \
+      --delimiter ' ' \
+      --preview "jq --color-output '.[] | select(.name==\"{2}\")' '$data_file'")
+
+  rm -f "$data_file"
+  printf '%s\n' "$selection"
+}
+
+# Look up a single element from the JSON list by its .name field.
+get_element_by_name() {
+  list=$1
+  name=$2
+
+  printf '%s\n' "$list" | jq --arg name "$name" '.[] | select(.name==$name)'
+}
+
+# Create a directory for a subgroup and stamp it with a .g2l_mark
+# so the user can cd into it and run g2l again.
+new_group() {
+  data=$1
+
+  path=$(printf '%s\n' "$data" | jq -r '.path')
+  id=$(printf '%s\n' "$data" | jq -r '.id')
+
+  mkdir -p "$path"
+  printf '%s\n' "$id" > "$path/$MARK_FILE_NAME"
+
+  echo "Created group in '$path'"
+}
+
+# Clone a project repo with glab.
+new_project() {
+  data=$1
+
+  id=$(printf '%s\n' "$data" | jq -r '.id')
+  glab repo clone "$id"
+}
+
+# --- main ---
+
+case "${1:-}" in
+  --help|-h)
+    show_help
+    ;;
+  --clear)
+    rm -f "$MARK_FILE_NAME"
+    echo "Cleared mark file"
+    exit 0
+    ;;
+esac
+
+check_deps
+
+if [ -f "$MARK_FILE_NAME" ]; then
+  # Read the group ID left by a previous run.
+  group_id=$(cat "$MARK_FILE_NAME")
+
+  # Fetch group info, projects, and subgroups in parallel.
+  tmp_dir=$(mktemp -d)
+  get_group_info "$group_id" > "$tmp_dir/info" &
+  get_group_projects "$group_id" > "$tmp_dir/projects" &
+  get_group_subgroups "$group_id" > "$tmp_dir/subgroups" &
+  wait
+
+  group_info=$(cat "$tmp_dir/info")
+  projects=$(cat "$tmp_dir/projects")
+  subgroups=$(cat "$tmp_dir/subgroups")
+  rm -rf "$tmp_dir"
+
+  # Merge projects and subgroups into one list with a display label.
+  elements=$(jq -n \
+    --argjson projects "$projects" \
+    --argjson subgroups "$subgroups" \
+    '($projects + $subgroups) | map(. + {
+      display: (if .type == "project" then "[P]" else "[G]" end) + " " + .name
+    })')
+
+  # Collect names of directories already present here.
+  existing_elements=$(find . -maxdepth 1 -mindepth 1 | sed 's|^\./||' | jq -R . | jq -s .)
+  if [ -z "$existing_elements" ]; then
+    existing_elements='[]'
+  fi
+
+  # Filter out anything that already exists locally.
+  elements=$(printf '%s\n' "$elements" | jq --argjson existing "$existing_elements" '
+    map(select(.path as $path | ($existing | index($path)) | not))
+  ')
+
+  element_count=$(printf '%s\n' "$elements" | jq 'length')
+  if [ "$element_count" -eq 0 ]; then
+    echo "No uncloned projects or subgroups in this group"
+    exit 0
+  fi
+
+  # Prompt with the group name so you know what you're browsing.
+  group_name=$(printf '%s\n' "$group_info" | jq -r '.name')
+  selected=$(prompt_selection "$elements" "group: $group_name > ")
+
+  if [ -z "$selected" ]; then
+    exit 0
+  fi
+
+  # Process each selection. Strip the display prefix to get the real name.
+  printf '%s\n' "$selected" | while IFS= read -r line; do
+    [ -z "$line" ] && continue
+    element_name=$(printf '%s\n' "$line" | sed 's/^\[[PG]\] //')
+    element=$(get_element_by_name "$elements" "$element_name")
+    element_type=$(printf '%s\n' "$element" | jq -r '.type')
+    case "$element_type" in
+      project)
+        new_project "$element"
+        ;;
+      group)
+        new_group "$element"
+        ;;
+      *)
+        echo "Unknown type: $element_type" >&2
+        ;;
+    esac
+  done
+else
+  # No mark file — ask for a starting group ID.
+  echo "No mark found in $PWD"
+  printf "GitLab group id: "
+  read -r group_id
+
+  # Validate: group IDs are numeric.
+  case "$group_id" in
+    ''|*[!0-9]*)
+      echo "Invalid group ID (must be numeric)" >&2
+      exit 1
+      ;;
+  esac
+
+  printf '%s\n' "$group_id" > "$MARK_FILE_NAME"
+  echo "Created mark file with group $group_id"
+fi
