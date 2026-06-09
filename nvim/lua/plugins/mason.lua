@@ -21,6 +21,7 @@ return {
       tailwindcss = {},
       clangd = {},
       roslyn_ls = {},
+      bashls = {}
     }
   },
   config = function(_, opts)
