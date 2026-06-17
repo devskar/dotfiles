@@ -179,7 +179,7 @@ if [ -f "$MARK_FILE_NAME" ]; then
     --argjson projects "$projects" \
     --argjson subgroups "$subgroups" \
     '($projects + $subgroups) | map(. + {
-      display: (if .type == "project" then "[P]" else "[G]" end) + " " + .name
+      display: "\(if .type == "project" then "[P]" else "[G]" end) \(.name)"
     })')
 
   # Collect names of directories already present here.
