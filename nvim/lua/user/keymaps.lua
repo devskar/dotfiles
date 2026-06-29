@@ -5,6 +5,16 @@ local telescope = require("telescope.builtin")
 map("n", "<leader>", "<nop>")
 map("n", "<leader>w", vim.cmd.write, { desc = "Save file" })
 
+map("n", "<Enter>", "o<ESC>")
+map("n", "<S-Enter>", "O<ESC>")
+
+map("n", "<leader>m", function()
+  local wrap = vim.wo.wrap
+
+  vim.wo.wrap = not wrap
+  vim.wo.linebreak = not wrap
+end, { desc = "Toggle wrap + linebreak" })
+
 -- ---- Telescope ----
 map("n", "<leader>ff", function()
   local ok = pcall(telescope.git_files)
