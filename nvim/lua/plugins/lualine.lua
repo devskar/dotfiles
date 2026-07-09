@@ -12,6 +12,7 @@ return {
         theme = "tomorrow_night",
       },
       sections = {
+        lualine_b = { "branch" },
         lualine_c = { project_filename },
       },
     })
