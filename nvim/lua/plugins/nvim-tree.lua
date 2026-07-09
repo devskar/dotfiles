@@ -13,6 +13,11 @@ return {
     local WIDTH_RATIO = 0.5
 
     require("nvim-tree").setup({
+      sync_root_with_cwd = true,
+      update_focused_file = {
+        enable = true,
+        update_root = true,
+      },
       view = {
         float = {
           enable = true,
