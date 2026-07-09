@@ -34,6 +34,7 @@ end, { desc = "Buffers" })
 map("n", "<leader>fh", function()
   require("telescope.builtin").help_tags()
 end, { desc = "Help" })
+map("n", "<leader>fp", "<cmd>lua require'telescope'.extensions.project.project{}<CR>", { desc = "Projects" })
 
 -- ---- LSP ----
 vim.api.nvim_create_autocmd(
