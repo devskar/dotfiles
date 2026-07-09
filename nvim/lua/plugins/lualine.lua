@@ -1,7 +1,3 @@
-local function project_filename()
-  return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
-end
-
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -13,7 +9,10 @@ return {
       },
       sections = {
         lualine_b = { "branch" },
-        lualine_c = { project_filename },
+        lualine_c = { {
+          'filename',
+          path = 1
+        }, "diff" },
       },
     })
   end,
